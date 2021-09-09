@@ -1,0 +1,58 @@
+﻿@model Parking.Models.Car
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@{ var datetime2 = DateTime.Now;
+    var datetime1 = Model.EnterDate;
+    TimeSpan hours = datetime2.Subtract(datetime1);
+    var hour = datetime1.ToString("t");
+}
+
+<h2>Details</h2>
+
+<div id="printable">
+    <h4>Car</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CarPlate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CarPlate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnterDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnterDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hour)
+        </dt>
+        <dd>
+            Time spent: @hours.Hours hours and @hours.Minutes minutes
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+

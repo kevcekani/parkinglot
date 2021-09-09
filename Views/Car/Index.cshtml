@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Parking.Models.Car>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{ 
+    int maxSpot = 30;
+    int counter = 0;
+    foreach (var item in Model)
+    {
+        counter += 1;
+    }
+}
+
+<h2>Index</h2>
+<h4>Fee: €3 the first hour, €1.5/additional hour. Hourly pay only.</h4>
+<h4>Spots occupied: @counter/@maxSpot.</h4>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "Car")
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Filter" class="btn btn-default" /> | @Html.ActionLink("Back to full list", "Index")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CarPlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnterDate)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarPlate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerID)
+                </td>
+                <td>
+                    @{ item.Hour = item.EnterDate.ToString("t"); }
+                    @Html.DisplayFor(modelItem => item.EnterDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
+                    @Html.ActionLink("Generate QRCode", "GenerateCode", new { id = item.ID})
+                </td>
+            </tr>
+        }
+
+    </table>
+}

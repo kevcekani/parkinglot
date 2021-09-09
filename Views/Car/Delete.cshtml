@@ -1,0 +1,116 @@
+﻿@model Parking.Models.Car
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to remove this entry?</h3>
+@{ 
+    var datetime2 = DateTime.Now;
+    var datetime1 = Model.EnterDate;
+    TimeSpan hours = datetime2.Subtract(datetime1);
+
+    var initalDate = Model.EnterDate;
+    var finalDate = DateTime.Now;
+
+    TimeSpan date = Convert.ToDateTime(finalDate) - Convert.ToDateTime(initalDate);
+    int totalDays = date.Days;
+
+    var hour = hours.Hours;
+    var min = hours.Minutes;
+    int days = totalDays * 24;
+    days = days * 60;
+    min = days + min;
+
+    double result;
+    if (hour >= 1)
+    {
+        if(min > 0)
+        {   //nese ka filluar nje ore e re, llogaritet e plote
+            result = hour;
+            result = result * 1.5;
+            result += 3;
+        }
+        else
+        {
+            result = hour - 1;
+            result = result * 1.5;
+            result += 3;
+        }
+        
+    }
+    else
+    {
+        result = 5;
+    }
+
+    string formated = result.ToString("N2");
+    }
+
+<script type="text/javascript">
+    function printDetails(printdiv) {
+        var panel = document.getElementById(printdiv);
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title></title>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(panel.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        setTimeout(function () {
+            printWindow.print();
+        }, 500);
+        return false;
+    }
+</script>
+
+<div>
+    <h4>Car</h4>
+    <hr />
+    <dl class="dl-horizontal" id="printable">
+        <dt>
+            @Html.DisplayNameFor(model => model.CarPlate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CarPlate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnterDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnterDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Hour)
+        </dt>
+        <dd>
+            Time spent: @hours.Hours hours and @hours.Minutes minutes<br />
+            Time of leave: @datetime2<br />
+            Amout to pay: € @formated.<br />
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+<div class="form-actions no-color">
+    <input type="submit" value="Delete" class="btn btn-default" /> |
+    <input name="printbutton" type="button" value="Print" OnClick="printDetails('printable');" class="btn btn-default" /> |
+    @Html.ActionLink("Back to List", "Index")
+</div>
+    }
+</div>
+
